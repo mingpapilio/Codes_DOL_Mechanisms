@@ -1,5 +1,5 @@
 # Codes_DOL_Mechanisms
-This repository is for open access to source codes and data for the manuscript **Dividing labour in social organisms: coordinated or random specialisation?**.
+This repository is for open access to source codes and data for the manuscript **Dividing labour in social organisms: coordinated or random specialisation?**
 
 In *simulation_codes* folder, because the random number generators files (dSFMT) are required for running, please **DO NOT** change the relative location of these files. **PLEASE READ** the notes at the beginning of each file, containing the key parameters and notes.
 
