@@ -16,7 +16,7 @@ beta=0.01; %shape of coordination cost
 lambda=0.1; %scale of coordination costs
 
 
-essen=linspace(0.1,1,2*length(size)); %discretisation for essentiality of cooperation 
+essen=linspace(0,1,2*length(size)); %discretisation for essentiality of cooperation 
 
 
 %Iterate through each possible parameter combination and evaluate 
@@ -88,5 +88,21 @@ ax.FontSize = ftsz/2;
 
 
 axis([0 max(essen) min(size) max(size)])
+
+
+endol=results(results(:,3)<=0,1);
+nndol=results(results(:,3)<=0,2);
+nmax=[];
+for i=1:length(essen)
+    e=essen(i);
+    if sum(endol==e)>0
+        nmax(i)=max(nndol(endol==e))
+    else
+        nmax(i)=0;
+    end
+end
+bottom=zeros(1,length(essen));
+hold on
+fill([essen flip(essen)],[nmax bottom],'r','LineStyle','none')
 
 

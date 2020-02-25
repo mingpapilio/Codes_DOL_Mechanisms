@@ -11,10 +11,10 @@ Nmax=40;
 Nmin=2;
 size=linspace(Nmin,Nmax,(Nmax-Nmin)/2+1);  %discretisation for group size
 
-essen=linspace(0.,1,length(size)); %discretisation for essentiality of cooperation 
+essen=linspace(0.0,1,length(size)); %discretisation for essentiality of cooperation 
 
 beta=0.01; %shape of coordination cost
-lambda=0.1; %scale of coordination costs
+alpha=0.1; %scale of coordination costs
 
 %Iterate through each possible parameter combination, calculate the optimal
 %proportion of helpers. Evaluate the fitness of a coordinated
@@ -26,15 +26,10 @@ for i=1:length(essen)
     for j=1:length(size)
         e=essen(i);
         N=size(j);
-        K=linspace(0,N,N+1);
-        p=linspace(0.01,0.99,100);
-        Wbroad=((1-(K./N))).*(1-e+e*((K)));
-        Kopt=K(max(Wbroad)==Wbroad);
-        options = optimoptions('fsolve','Display','none', 'Algorithm', 'levenberg-marquardt', 'TolFun', 1e-9);
         popt=max((e*(N+1)-1)/(2*e*N),0);
-        coordfit=(1-lambda.*(1-exp(-beta.*N.*(N-1)/2))).*max(Wbroad);
-        stochcontfit=WK(popt,Wbroad);
-        results(end+1,:)=[e N mean(Kopt)/N popt coordfit stochcontfit];
+        cn=alpha.*(1-exp(-beta.*N.*(N-1)/2));
+        cstar=(N*e-(1-e))/(N*((N-1)*e+1));
+        results(end+1,:)=[e N popt cn cstar];
     
     end
 end
@@ -55,9 +50,22 @@ for i=1:length(size)
     for j=1:length(essen)
         e=essen(j);
         N=size(i);
-        coordfit=results(results(:,2)==N&results(:,1)==e,5);
-        stochcontfit=results(results(:,2)==N&results(:,1)==e,6);
+        coordfit=results(results(:,2)==N&results(:,1)==e,4);
+        stochcontfit=results(results(:,2)==N&results(:,1)==e,5);
         matt2(i,j)=stochcontfit/coordfit;
+    end
+end
+
+for i=1:length(size)
+    for j=1:length(essen)
+        e=essen(j);
+        N=size(i);
+        coordcost=results(results(:,2)==N&results(:,1)==e,4);
+        randcost=results(results(:,2)==N&results(:,1)==e,5);
+        matt3(i,j)=randcost/coordcost;
+        if matt3(i,j)<0
+            matt3(i,j)=0 %area where DOL not favoured for either mechanism
+        end
     end
 end
 
@@ -67,9 +75,8 @@ end
 %continuous optimal proportion of helpers
 figure()
 set(gcf, 'Position',  [0, 0, 800, 800])
-colormap(y)
-v=[0.00001 0.025 0.05 1]
-[M,c]=contourf(essen, size,matt2, [0, 1, 1000],'Color','k','ShowText','off', 'Linestyle','-')
+colormap(flipud(y))
+[M,c]=contourf(essen, size,matt3, [0, 1, 1000],'Color','k','ShowText','off', 'Linestyle','-')
 c.LineWidth = 2;
 set(gcf,'color','w');
 ax = gca;
@@ -79,3 +86,19 @@ ax.FontSize = ftsz/2;
 axis([min(essen) max(essen) min(size) max(size)])
 ax.XTickLabel={'0', '1/2','1'};
 
+
+
+endol=results(results(:,3)<=0,1);
+nndol=results(results(:,3)<=0,2);
+nmax=[];
+for i=1:length(essen)
+    e=essen(i);
+    if sum(endol==e)>0
+        nmax(i)=max(nndol(endol==e))
+    else
+        nmax(i)=0;
+    end
+end
+bottom=zeros(1,length(essen));
+hold on
+fill([essen flip(essen)],[nmax bottom],'r','LineStyle','none')
