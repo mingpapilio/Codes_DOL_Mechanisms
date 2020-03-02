@@ -69,7 +69,7 @@ int main(){
         int k_i;                // Number of interacting helpers
 
     // Output settings
-        FILE *out, *out2, *out3, *out4, *idv_out, *idv_link;
+        FILE *out, *out2, *out3, *out4;
         out= fopen("out_s_10.txt","w");
         fprintf(out, "T\ts_1\ts_2\ts_3\ts_4\ts_5\ts_6\ts_7\ts_8\ts_9\ts_10\n");
         out2= fopen("out_p_10.txt","w");
