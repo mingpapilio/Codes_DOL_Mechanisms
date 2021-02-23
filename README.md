@@ -1,7 +1,7 @@
 # Codes_DOL_Mechanisms
 This repository is for open access to source codes and data for the manuscript **The evolution of mechanisms to divide labour in microorganisms**
 
-In ***analytical_and_numerical_scripts*** are the files for generating Fig.3 and Fig.S1-3. The enclosed scripts do not label axes or results. For this information please refer to the figures as they occur in the main text and supplementary information.
+In ***analytical_and_numerical scripts*** are the files for generating Fig.3 and Fig.S1-3. The enclosed scripts do not label axes or results. For this information please refer to the figures as they occur in the main text and supplementary information.
 
 In ***cyanobacteria_simulations*** are the files for generating Fig.4-5 and Fig.S5. Please see the readme.txt for more information about each file. 
 
