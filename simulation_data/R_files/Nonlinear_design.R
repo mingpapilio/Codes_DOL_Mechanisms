@@ -1,6 +1,0 @@
-dev.new()
-curve(0.0002*x, xlim= c(0, 20*39), xlab= "Expected coordination level, y", ylab="Coordination cost, c_n")
-curve(0.1*(1-exp(-0.01*x)), add=T, lty=2)
-curve(0.1*(0.0002*x)^0.1, add=T, lty=3)
-curve(0.0002*(x/(1+0.001*x)), add=T, lty=4)
-legend("topleft", legend=c("Linear function", "Function I", "Function II", "Function III"), lty=c(1,2,3,4))
